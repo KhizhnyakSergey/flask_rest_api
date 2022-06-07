@@ -1,12 +1,12 @@
 from flask import Flask
-from flask_restful import Api, Resource
+from flask_restful import Api, Resource, reqparse
 
 app = Flask(__name__)
 api = Api()
 
 courses = {
-    1: {'name': 'Python', 'videos': 15},
-    2: {'name': 'Java', 'videos': 10}
+    1: {"name": "Python", "videos": 15},
+    2: {"name": "Java", "videos": 10}
 }
 
 
@@ -19,6 +19,13 @@ class Main(Resource):
 
     def delete(self, course_id):
         del courses[course_id]
+        return courses
+
+    def post(self, course_id):
+        parser = reqparse.RequestParser()
+        parser.add_argument("name", type=str)
+        parser.add_argument("videos", type=int)
+        courses[course_id] = parser.parse_args()
         return courses
 
 
