@@ -9,6 +9,9 @@ courses = {
     2: {"name": "Java", "videos": 10}
 }
 
+parser = reqparse.RequestParser()
+parser.add_argument("name", type=str)
+parser.add_argument("videos", type=int)
 
 class Main(Resource):
     def get(self, course_id):
@@ -22,9 +25,10 @@ class Main(Resource):
         return courses
 
     def post(self, course_id):
-        parser = reqparse.RequestParser()
-        parser.add_argument("name", type=str)
-        parser.add_argument("videos", type=int)
+        courses[course_id] = parser.parse_args()
+        return courses
+
+    def put(self, course_id):
         courses[course_id] = parser.parse_args()
         return courses
 
